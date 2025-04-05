@@ -13,9 +13,9 @@ app.get("/api/news", async (req, res) => {
   const category = req.query.category || "";
   const query = req.query.q || "";
 
-  let url = `https://newsapi.org/v2/everything?apiKey=YOUR_API_KEY&pageSize=30`;
+  let url = `https://newsapi.org/v2/everything?apiKey=256902348cbe42fa9b609a8dd8f44cb6&pageSize=30`;
   if (category) {
-    url = `https://newsapi.org/v2/top-headlines?apiKey=YOUR_API_KEY&category=${category}&pageSize=30`;
+    url = `https://newsapi.org/v2/top-headlines?apiKey=256902348cbe42fa9b609a8dd8f44cb6&category=${category}&pageSize=30`;
   } else if (query) {
     url += `&q=${encodeURIComponent(query)}`;
   }
