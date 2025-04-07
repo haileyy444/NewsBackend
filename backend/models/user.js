@@ -253,7 +253,7 @@ static async addFavorite(username, articleData) {
     if (!result.rows.length) {
       throw new NotFoundError("Favorite not found");
     }
-  
+    console.log(`[INFO] Favorite with URL: ${url} successfully removed.`);
     return result.rows[0];
   }
   
