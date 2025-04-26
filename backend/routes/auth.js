@@ -7,10 +7,19 @@ const jsonschema = require("jsonschema");
 const User = require("../models/user");
 const express = require("express");
 const router = new express.Router();
+const rateLimit = require("express-rate-limit");
 const { createToken } = require("../helpers/tokens");
 const userAuthSchema = require("../schemas/userAuth.json");
 const userRegisterSchema = require("../schemas/userRegister.json");
 const { BadRequestError } = require("../expressError");
+
+
+// Set up rate limiter: maximum of 5 requests per minute for /token
+const authLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 5,              // limit each IP to 5 requests per windowMs
+  message: "Too many login attempts. Please try again after a minute."
+});
 
 /** POST /auth/token:  { username, password } => { token }
  *
@@ -19,7 +28,7 @@ const { BadRequestError } = require("../expressError");
  * Authorization required: none
  */
 
-router.post("/token", async function (req, res, next) {
+router.post("/token", authLimiter, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, userAuthSchema);
     if (!validator.valid) {
